@@ -15,15 +15,15 @@ public class ClientesApplication {
 		SpringApplication.run(ClientesApplication.class, args);
 	}
 
-	@Bean
-	public CommandLineRunner run(@Autowired ClienteRepository repository){
-		return args -> {
-			Cliente cliente =  Cliente.builder()
-					.cpf("00000000000")
-					.nome("Fulano")
-					.build();
-			repository.save(cliente);
-		};
-	}
+//	@Bean
+//	public CommandLineRunner run(@Autowired ClienteRepository repository){
+//		return args -> {
+//			Cliente cliente =  Cliente.builder()
+//					.cpf("00000000000")
+//					.nome("Fulano")
+//					.build();
+//			repository.save(cliente);
+//		};
+//	}
 
 }
