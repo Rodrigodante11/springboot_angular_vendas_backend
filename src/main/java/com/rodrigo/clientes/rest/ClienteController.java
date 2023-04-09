@@ -14,7 +14,7 @@ import java.util.Optional;
 public class ClienteController {
 
 
-    private ClienteRepository clienteRepository;
+    private final ClienteRepository clienteRepository;
 
     @Autowired
     public ClienteController(ClienteRepository clienteRepository) {
@@ -23,7 +23,7 @@ public class ClienteController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED) // para retonar o status create / se nao colocar ira retornar o OK por padrao
-    public Cliente salvar( Cliente cliente){
+    public Cliente salvar(@RequestBody Cliente cliente){
         return  clienteRepository.save(cliente);
     }
 
@@ -46,4 +46,21 @@ public class ClienteController {
                 })
                 .orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
+
+    @PutMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void atalizar(@PathVariable Integer id, @RequestBody Cliente clienteAtualizar){
+
+        clienteRepository
+                .findById(id)
+                .map( cliente -> {
+
+                    clienteAtualizar.setId(cliente.getId());
+                    return clienteRepository.save(clienteAtualizar);
+
+                })
+                .orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+    }
+
 }
