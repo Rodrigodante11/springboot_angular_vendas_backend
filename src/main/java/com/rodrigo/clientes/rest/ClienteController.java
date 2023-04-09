@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
@@ -23,7 +24,7 @@ public class ClienteController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED) // para retonar o status create / se nao colocar ira retornar o OK por padrao
-    public Cliente salvar(@RequestBody Cliente cliente){
+    public Cliente salvar(@RequestBody @Valid Cliente cliente){
         return  clienteRepository.save(cliente);
     }
 
@@ -31,7 +32,7 @@ public class ClienteController {
     public Cliente acharPorId(@PathVariable Integer id){
         return clienteRepository
                 .findById(id)
-                .orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente nao encontrado"));
 
     }
 
@@ -44,12 +45,12 @@ public class ClienteController {
                     clienteRepository.delete(cliente);
                     return Void.TYPE;
                 })
-                .orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente nao encontrado"));
     }
 
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void atalizar(@PathVariable Integer id, @RequestBody Cliente clienteAtualizar){
+    public void atalizar(@PathVariable Integer id, @RequestBody @Valid Cliente clienteAtualizar){
 
         clienteRepository
                 .findById(id)
@@ -59,7 +60,7 @@ public class ClienteController {
                     return clienteRepository.save(clienteAtualizar);
 
                 })
-                .orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente nao encontrado"));
 
     }
 
